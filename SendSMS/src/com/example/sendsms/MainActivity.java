@@ -49,7 +49,7 @@ public class MainActivity extends Activity {
                 
                 publishProgress(i);
                 
-                sendSMS("910563829", "sms "+i);
+                sendSMS("phonenumber", "sms " + i);
                 try {
                     Thread.sleep(10000);
                 } catch (InterruptedException e) {
