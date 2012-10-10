@@ -3,6 +3,21 @@
     <string name="app_name">SendSMS</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">SendSMS</string>
+    <string name="title_activity_options">SendSMS Preferences</string>
+    
+    <string name="dialog_based_preferences">Preferências</string>
+    
+    <string name="settings_phonenumber_title">Numero Telemovel</string>
+    <string name="settings_phonenumber_dialogMessage">Numero de telemovel para onde pretende enviar a mensagem.</string>
+    <string name="settings_phonenumber_summary">Numero de telemovel para onde pretende enviar a mensagem.</string>
+    
+    <string name="settings_timeout_title">Tempo de Espera</string>
+    <string name="settings_timeout_dialogMessage">Intervalo em que cada sms é enviado.</string>
+    <string name="settings_timeout_summary">Tempo de envio entre SMS.</string>
+    
+    <string name="settings_quantity_title">Quantidade SMS</string>
+    <string name="settings_quantity_dialogMessage">Numero de mensagens a ser enviado.</string>
+    <string name="settings_quantity_summary">Quantidade de mensagens para enviar.</string>
 
 </resources>
