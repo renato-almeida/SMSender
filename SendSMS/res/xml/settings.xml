@@ -5,6 +5,7 @@
         	
 	    <EditTextPreference
 	        android:key="phonenumber"
+	        android:inputType="number"
 	        android:title="@string/settings_phonenumber_title"
 	        android:dialogTitle="@string/settings_phonenumber_title"
 	        android:dialogMessage="@string/settings_phonenumber_dialogMessage"
@@ -13,6 +14,7 @@
 	    
 	    <EditTextPreference
 	        android:key="timeout"
+	        android:inputType="number"
 	        android:title="@string/settings_timeout_title"
 	        android:dialogTitle="@string/settings_timeout_title"
 	        android:dialogMessage="@string/settings_timeout_dialogMessage"
@@ -21,12 +23,11 @@
 	    
 	    <EditTextPreference
 	        android:key="smsnumber"
+	        android:inputType="number"
 	        android:title="@string/settings_quantity_title"
 	        android:dialogTitle="@string/settings_quantity_title"
 	        android:dialogMessage="@string/settings_quantity_dialogMessage"
 	        android:summary="@string/settings_quantity_summary"
 	        android:defaultValue="245"/>
     </PreferenceCategory>
-    
-
 </PreferenceScreen>
