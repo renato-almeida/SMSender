@@ -19,5 +19,8 @@
     <string name="settings_quantity_title">Quantidade SMS</string>
     <string name="settings_quantity_dialogMessage">Numero de mensagens a ser enviado.</string>
     <string name="settings_quantity_summary">Quantidade de mensagens para enviar.</string>
+    
+    <string name="main_start_button">Iniciar</string>
+    <string name="main_stop_button">Parar</string>
 
 </resources>

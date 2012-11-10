@@ -20,6 +20,7 @@ public class OptionsActivity extends PreferenceActivity implements OnSharedPrefe
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
     		String key) {
     	Log.i("OptionsActivity", key);
+    	
     }
     
     @SuppressWarnings("deprecation")

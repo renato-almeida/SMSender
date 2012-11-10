@@ -16,17 +16,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
     
-    TextView tv;
-    PowerManager.WakeLock wl;
+    private TextView tv;
+    private PowerManager.WakeLock wl;
     
     private String phoneNumber;
     private long timeout;
     private int smsQuantity;
+    private int lastSMSNumber = 0;
+    
     private SharedPreferences preferenceManager;
+    private ProgressBar progressBar;
+    
+    private SendSMSTask task;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,19 +54,40 @@ public class MainActivity extends Activity {
 			startActivityForResult(settings, 0);
         }
         
+        tv = (TextView) findViewById(R.id.textView1);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar.setMax(smsQuantity);
+        
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        wl = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK
-                                        | PowerManager.ON_AFTER_RELEASE, "My Tag");
-        wl.acquire();
+        wl = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "SendSMS");
         
-        Button b = (Button) findViewById(R.id.button1);
+        final Button startButton = (Button) findViewById(R.id.startSendButton);
+        final Button stopButton = (Button) findViewById(R.id.stopSendButton);
         
-        b.setOnClickListener(new OnClickListener() {
+        startButton.setOnClickListener(new OnClickListener() {
             
             @Override
             public void onClick(View v) {
-                new Cenas().execute();
+            	if (task == null)
+            		task = new SendSMSTask();
+            	
+            	task.setActivity(MainActivity.this);
+                task.execute(lastSMSNumber, smsQuantity);
+                startButton.setEnabled(false);
+                stopButton.setEnabled(true);
+            }
+        });
+        
+        stopButton.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                task.cancel(true);
+                task.setActivity(null);
+                task = null;
                 
+                stopButton.setEnabled(false);
+                startButton.setEnabled(true);
             }
         });
     }
@@ -79,6 +106,8 @@ public class MainActivity extends Activity {
             
             String tmpSMSQuantity = preferenceManager.getString("smsnumber", "245");
             smsQuantity = Integer.parseInt(tmpSMSQuantity);
+            
+            progressBar.setMax(smsQuantity);
     	}
     }
     
@@ -102,31 +131,51 @@ public class MainActivity extends Activity {
     	}
     }
     
-    private class Cenas extends AsyncTask<Void, Integer, Void>{
-        
+    private class SendSMSTask extends AsyncTask<Integer, Integer, Void>{
+    	
+    	private MainActivity main;
+    	
         @Override
-        protected Void doInBackground(Void... params) {
-            
-            for(int i=0; i<smsQuantity; i++){
+        protected Void doInBackground(Integer... params) {
+        	
+        	wl.acquire();
+        	
+            for(int i = params[0] + 1; i <= params[1]; i++) {
+            	
+            	if (!isCancelled()) {
                 
-                publishProgress(i);
-                
-                sendSMS(phoneNumber, "sms " + i);
-                try {
-                    Thread.sleep(timeout);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+	                publishProgress(i, params[1]);
+	                
+	                sendSMS(phoneNumber, "sms " + i);
+	                
+	                if (!isCancelled()) {
+		                try {
+	                		Thread.sleep(timeout);
+		                } catch (InterruptedException e) {
+		                    e.printStackTrace();
+		                    break;
+		                }
+	                }
+	            }
             }
             
             return null;
         }
         
         @Override
-        public void onProgressUpdate( Integer ... params){
-            
-            tv = (TextView) findViewById(R.id.textView1);
-            tv.setText("Sending "+params[0]+"...");
+        public void onProgressUpdate( Integer ... params) {
+        	
+        	main.lastSMSNumber = params[0];
+        	
+            main.tv.setText("Sending SMS: " + params[0] + " of " + params[1]);
+            main.progressBar.setProgress(params[0]);
+        }
+        
+        @Override
+        protected void onCancelled(Void result) {
+        	super.onCancelled(result);
+        	wl.release();
+        	Log.d("onCancelled", "Called cancel!");
         }
         
         @Override
@@ -134,15 +183,18 @@ public class MainActivity extends Activity {
             
             super.onPostExecute(result);
             wl.release();
+            Log.d("onPostExecute", "Called on post execute!");
         }
         
-        
+        public void setActivity(MainActivity activ) {
+        	this.main = activ;
+        }
     }
     
     private void sendSMS(String phoneNumber, String message)
     {
         Log.v("phoneNumber",phoneNumber);
-        Log.v("MEssage",message);
+        Log.v("Message",message);
         PendingIntent pi = PendingIntent.getActivity(this, 0, new Intent(this, X.class), 0);
         SmsManager sms = SmsManager.getDefault();
         sms.sendTextMessage(phoneNumber, null, message, pi, null);
