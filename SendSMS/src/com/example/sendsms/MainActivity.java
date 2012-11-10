@@ -83,13 +83,20 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 task.cancel(true);
-                task.setActivity(null);
-                task = null;
-                
-                stopButton.setEnabled(false);
-                startButton.setEnabled(true);
+                cleanTask();
             }
         });
+    }
+    
+    private void cleanTask() {
+    	task.setActivity(null);
+        task = null;
+        
+        Button startButton = (Button) findViewById(R.id.startSendButton);
+        Button stopButton = (Button) findViewById(R.id.stopSendButton);
+        
+        stopButton.setEnabled(false);
+        startButton.setEnabled(true);
     }
     
     @Override
@@ -174,16 +181,18 @@ public class MainActivity extends Activity {
         @Override
         protected void onCancelled(Void result) {
         	super.onCancelled(result);
-        	wl.release();
+        	main.wl.release();
         	Log.d("onCancelled", "Called cancel!");
         }
         
         @Override
         protected void onPostExecute( Void result ) {
-            
+        	Log.d("onPostExecute", "Called on post execute!");
             super.onPostExecute(result);
-            wl.release();
-            Log.d("onPostExecute", "Called on post execute!");
+            main.wl.release();
+            main.lastSMSNumber = 0;
+            main.tv.setText("Finished...");
+            cleanTask();
         }
         
         public void setActivity(MainActivity activ) {
