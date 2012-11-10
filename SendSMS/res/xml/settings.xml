@@ -19,7 +19,7 @@
 	        android:dialogTitle="@string/settings_timeout_title"
 	        android:dialogMessage="@string/settings_timeout_dialogMessage"
 	        android:summary="@string/settings_timeout_summary"
-	        android:defaultValue="20000"/>
+	        android:defaultValue="20"/>
 	    
 	    <EditTextPreference
 	        android:key="smsnumber"

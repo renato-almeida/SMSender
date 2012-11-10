@@ -13,8 +13,8 @@
     <string name="settings_phonenumber_summary">Numero de telemovel para onde pretende enviar a mensagem.</string>
     
     <string name="settings_timeout_title">Tempo de Espera</string>
-    <string name="settings_timeout_dialogMessage">Intervalo em que cada sms é enviado.</string>
-    <string name="settings_timeout_summary">Tempo de envio entre SMS.</string>
+    <string name="settings_timeout_dialogMessage">Intervalo entre cada sms (segundos).</string>
+    <string name="settings_timeout_summary">Tempo de envio entre SMS em segundos.</string>
     
     <string name="settings_quantity_title">Quantidade SMS</string>
     <string name="settings_quantity_dialogMessage">Numero de mensagens a ser enviado.</string>

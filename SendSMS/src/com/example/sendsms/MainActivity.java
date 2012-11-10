@@ -42,8 +42,8 @@ public class MainActivity extends Activity {
         preferenceManager = PreferenceManager.getDefaultSharedPreferences(this);
         phoneNumber = preferenceManager.getString("phonenumber", null);
         
-        String tmpTimeout = preferenceManager.getString("timeout", "20000");
-        timeout = Long.parseLong(tmpTimeout);
+        String tmpTimeout = preferenceManager.getString("timeout", "20");
+        timeout = Long.parseLong(tmpTimeout) * 1000;
         
         String tmpSMSQuantity = preferenceManager.getString("smsnumber", "245");
         smsQuantity = Integer.parseInt(tmpSMSQuantity);
@@ -108,8 +108,8 @@ public class MainActivity extends Activity {
     		phoneNumber = preferenceManager.getString("phonenumber", null);
             //timeout = preferenceManager.getLong("timeout", 20000);
     		
-    		String tmpTimeout = preferenceManager.getString("timeout", "20000");
-            timeout = Long.parseLong(tmpTimeout);
+    		String tmpTimeout = preferenceManager.getString("timeout", "20");
+            timeout = Long.parseLong(tmpTimeout) * 1000;
             
             String tmpSMSQuantity = preferenceManager.getString("smsnumber", "245");
             smsQuantity = Integer.parseInt(tmpSMSQuantity);
