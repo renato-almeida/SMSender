@@ -89,6 +89,11 @@ public class MainActivity extends Activity {
     }
     
     private void cleanTask() {
+    	
+    	Log.d("cleanTask", "Called... Activity: " + task.toString());
+    	
+    	wl.release();
+    	
     	task.setActivity(null);
         task = null;
         
@@ -181,15 +186,13 @@ public class MainActivity extends Activity {
         @Override
         protected void onCancelled(Void result) {
         	super.onCancelled(result);
-        	main.wl.release();
-        	Log.d("onCancelled", "Called cancel!");
+        	Log.d("SendSMSAsyncTask", "called method onCancelled.");
         }
         
         @Override
         protected void onPostExecute( Void result ) {
         	Log.d("onPostExecute", "Called on post execute!");
             super.onPostExecute(result);
-            main.wl.release();
             main.lastSMSNumber = 0;
             main.tv.setText("Finished...");
             cleanTask();
